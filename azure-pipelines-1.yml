@@ -1,9 +1,25 @@
 trigger:
-  - main
+- main
 
 pool:
-  name: Default  # Ensure this matches your agent pool
+  name: Default
 
 steps:
-  - script: echo "Hello, Azure DevOps Agent!"
-    displayName: 'Run a basic script'
+- checkout: self  # ✅ Fix: Checkout code from GitHub
+
+- task: Maven@3  # Build Spring Boot app
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+    publishJUnitResults: true
+
+- task: CopyFiles@2  # Copy JAR file to staging directory
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/target'
+    Contents: '**/*.jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1  # Publish JAR as a pipeline artifact
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
