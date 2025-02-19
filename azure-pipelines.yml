@@ -28,6 +28,6 @@ steps:
 - task: AzureWebApp@1
   displayName: 'Deploy to Azure Web App'
   inputs:
-    azureSubscription: '<YOUR_AZURE_SUBSCRIPTION>'
+    azureSubscription: 'azure-connection-springboot'
     appName: 'spring-boot-hello'
     package: '$(Build.ArtifactStagingDirectory)/**/*.jar'
