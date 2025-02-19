@@ -1,0 +1,9 @@
+trigger:
+  - main
+
+pool:
+  name: Default  # Ensure this matches your agent pool
+
+steps:
+  - script: echo "Hello, Azure DevOps Agent!"
+    displayName: 'Run a basic script'
